@@ -1,70 +1,74 @@
-player_1 = {
-    Rell = "fill",
-    PosX = 10,
-    PosY = 200,
-    AnchX = 20,
-    AnchY = 80,
-    Speed = 100,
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 720
+SPEED = 60
+
+PLAYERS = {
+    ONE = {
+        mode = "fill",
+        x = WINDOW_WIDTH - 30,
+        y = WINDOW_HEIGHT / 2,
+        width = 20,
+        height = 100,
+        speed = SPEED
+    },
+
+    TWO = {
+        mode = "fill",
+        x = WINDOW_WIDTH - WINDOW_WIDTH + 10,
+        y = WINDOW_HEIGHT / 2,
+        width = 20,
+        height = 100,
+        speed = SPEED
+    }
 }
 
-player_2 = {
+BALL = {
     Rell = "fill",
-    PosX = 770,
-    PosY = 200,
-    AnchX = 20,
-    AnchY = 80,
-    Speed = 100,
-}
-
-ball = {
-    Rell = "fill",
-    PosX = love.window.getWidth() / 2,
-    PosY = love.window.getHeight() / 2,
-    Radio = 10,
+    Radio = 10
 }
 
 function love.load()
+    love.window.setTitle("Pong")
+    love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
+        fullscreen = false,
+        resizable = false,
+        vsync = true
+    })
 
 end
 
 function love.update(dt)
-    if (love.keyboard.isDown('w')) then
-        player_1.PosY = player_1.PosY - (player_1.Speed * dt)
+    if (love.keyboard.isDown('w') and PLAYERS.ONE.y >= 0 ) then
+        PLAYERS.ONE.y = PLAYERS.ONE.y - (PLAYERS.ONE.speed * dt)
     elseif (love.keyboard.isDown('s')) then
-        player_1.PosY = player_1.PosY + (player_1.Speed * dt)
+        PLAYERS.ONE.y = PLAYERS.ONE.y + (PLAYERS.ONE.speed * dt)
     end
-
-    if (love.keyboard.isDown('up')) then
-        player_2.PosY = player_2.PosY - (player_2.Speed * dt)
+    
+    if (love.keyboard.isDown('up') and (PLAYERS.TWO.y + PLAYERS.TWO.height) <= love.graphics.getHeight() ) then
+        PLAYERS.TWO.y = PLAYERS.TWO.y - (PLAYERS.TWO.speed * dt)
     elseif (love.keyboard.isDown('down')) then
-        player_2.PosY = player_2.PosY + (player_2.Speed * dt)
+        PLAYERS.TWO.y = PLAYERS.TWO.y + (PLAYERS.TWO.speed * dt)
     end
+    
 end
 
 function love.draw()
     -- Los parametros son ("Esta rellenado", PosX, PosY, AncX, AncY)
     love.graphics.rectangle(
-        player_1.Rell,
-        player_1.PosX,
-        player_1.PosY,
-        player_1.AnchX,
-        player_1.AnchY
+        PLAYERS.ONE.mode,
+        PLAYERS.ONE.x,
+        PLAYERS.ONE.y,
+        PLAYERS.ONE.width,
+        PLAYERS.ONE.height
     );
 
     love.graphics.rectangle(
-        player_2.Rell,
-        player_2.PosX,
-        player_2.PosY,
-        player_2.AnchX,
-        player_2.AnchY
+        PLAYERS.TWO.mode,
+        PLAYERS.TWO.x,
+        PLAYERS.TWO.y,
+        PLAYERS.TWO.width,
+        PLAYERS.TWO.height
     );
-
-    love.graphics.circle(
-        ball.Rell,
-        ball.PosX,
-        ball.PosY,
-        ball.Radio
-    )
 
     love.graphics.circle(
         "fill",
